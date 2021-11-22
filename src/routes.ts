@@ -1,4 +1,5 @@
 import { Request, Response, Router } from "express";
+import fs from "fs"
 import multer from 'multer';
 import { Readable } from 'stream'
 import readline from "readline";
@@ -19,13 +20,15 @@ router.post("/products", multerConfig.single("file"), async (req: Request, res: 
 
     for await (let line of csvline) {
         const csvsplit = line.split(";")
-        const csvoptionsplit = csvsplit[3].split("-")
-        console.log(`${csvoptionsplit[2]}`);
-        console.log(`${csvoptionsplit[2]}`);
+        fs.writeFileSync("programming.txt",
+            "Esses são os produtos " + csvsplit[1] + "\nEsses são os respectivos preços" + csvsplit[2] + "\n", {
+            encoding: "utf8",
+            flag: "a+",
+            mode: 0o666
+        })
     }
 
-    // console.log(req.file?.buffer.toString("utf-8"))
-    return res.send()
+    return res.send();
 })
 
 export { router };
